@@ -41,6 +41,8 @@ function setup(document)
 	// start
 }
 
+var xmlHttp = null;    
+
 function search(){
     var reviewsDiv = document.getElementById('resultsArea');
     var city = "";
@@ -51,7 +53,7 @@ function search(){
         city = "Phoenix";
     }
     else { //default to Vegas
-        city = "Vegas";
+        city = "Las Vegas";
     }
     bySentiment = document.getElementById('feelRadio').checked;
     var bySentimentString = "";
@@ -61,17 +63,25 @@ function search(){
         bySentimentString = "False"
 
 
-    var xmlHttp = null;    
     theUrl = "http://162.242.240.131:4000?city="+city+"&bySentiment="+bySentimentString;
     console.log(theUrl);
     xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", theUrl);
-    xmlHttp.send( null );
-    console.log(xmlHttp.responseText);
-    
-    populate(reviews);
+    xmlHttp.open( "GET", theUrl, true);
+    xmlHttp.onreadystatechange = function (){
+        if (xmlHttp.readyState==4) {
+            console.log(xmlHttp.responseText);
+        }
+        else {
+            console.log("readyState was not 4");
+        }
+        populate(reviews);
+    }
+    xmlHttp.send(null);
 }
 
+function OnStateChange(){
+
+}
 
 function populate(bizs){
     var bigBizDiv = document.getElementById('resultsArea');

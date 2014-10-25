@@ -18,10 +18,13 @@ train_features = negative_features + positive_features
 
 classifier = NaiveBayesClassifier.train(train_features)
 
+reviewList = []
 for line in open('review_KcSJUq1kwO8awZRMS6Q49g', 'r'):
     review_json = TextProcess.read_line(line)
     review_id = review_json['review_id']
 
-    print "Review %s score: %s" % (review_id, classifier.posScore(word_features(TextProcess.tokenize(review_json))))
+    #print "Review %s score: %s" % (review_id, classifier.posScore(word_features(TextProcess.tokenize(review_json))))
+    reviewList.append((review_id, classifier.posScore(word_features(TextProcess.tokenize(review_json)))))
 
-classifier.show_most_informative_features()
+reviewList = sorted(reviewList, key=lambda count: count[1], reverse=True)
+#print review_json[str(reviewList[0][0])]['text']
