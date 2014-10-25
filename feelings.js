@@ -43,16 +43,32 @@ function setup(document)
 
 function search(){
     var reviewsDiv = document.getElementById('resultsArea');
+    var city = "";
     while (reviewsDiv.firstChild){
         reviewsDiv.removeChild(reviewsDiv.firstChild);
     }
-    if (document.getElementById('phoenixRadio').checked)
-        console.log("User chose Phoenix");
-    else //default to Vegas
-        console.log("User chose Vegas");
+    if (document.getElementById('phoenixRadio').checked){
+        city = "Phoenix";
+    }
+    else { //default to Vegas
+        city = "Vegas";
+    }
     bySentiment = document.getElementById('feelRadio').checked;
-    //make call to server
-    //reviews = serverCall
+    var bySentimentString = "";
+    if (bySentiment)
+        bySentimentString = "True"
+    else
+        bySentimentString = "False"
+
+
+    var xmlHttp = null;    
+    theUrl = "http://162.242.240.131:4000?city="+city+"&bySentiment="+bySentimentString;
+    console.log(theUrl);
+    xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl);
+    xmlHttp.send( null );
+    console.log(xmlHttp.responseText);
+    
     populate(reviews);
 }
 
