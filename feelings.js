@@ -34,7 +34,6 @@ reviews = [
     }
 ]
 
-
 window.onload = setup(document);
 
 function setup(document)
@@ -59,10 +58,11 @@ function search(){
 
 
 function populate(bizs){
-    var bizDiv = document.getElementById('resultsArea');
+    var bigBizDiv = document.getElementById('resultsArea');
     for (i in bizs){
         curBiz = bizs[i];
-        var bDiv = document.createElement('div');
+        var singleBizDiv = document.createElement('div');
+        singleBizDiv.style.width = "900px";
         
         var name = document.createElement('h1');
         name.style.margin = "10px";
@@ -88,26 +88,33 @@ function populate(bizs){
         inner = inner.substring(0, inner.length - 2);
         cats.innerHTML = inner;
 
-        bDiv.appendChild(name);
-        bDiv.appendChild(starsDiv);
-        bDiv.appendChild(address);
-        bDiv.appendChild(cats);
+        var reviewSnips = document.createElement('p');
+        var reviewsString = ""
+        for (j in curBiz.snippets){
+            reviewsString += "\"" + curBiz.snippets[j] + "...\"" + "<br>";
+        }
+        reviewSnips.innerHTML = reviewsString;   
 
-        bDiv.style.border = "1px solid black";
-        bDiv.style.marginBottom = "4px";
+        singleBizDiv.appendChild(name);
+        singleBizDiv.appendChild(starsDiv);
+        singleBizDiv.appendChild(address);
+        singleBizDiv.appendChild(cats);
+        singleBizDiv.appendChild(reviewSnips);
 
-        bizDiv.appendChild(bDiv);
+        singleBizDiv.style.border = "1px solid black";
+        singleBizDiv.style.marginBottom = "4px";
+
+        bigBizDiv.appendChild(singleBizDiv);
     }
 }
 
-
 function makeStars(biz){
     var starDiv = document.createElement('div');
-    var sentStars = document.createElement('img');
+    var sentimentStars = document.createElement('img');
     var rateStars = document.createElement('img');
 
     var sentImg = getStarImg(biz.sentiment);
-    sentStars.setAttribute('src',sentImg);
+    sentimentStars.setAttribute('src',sentImg);
     var rateImg = getStarImg(biz.stars);
     rateStars.setAttribute('src',rateImg);    
     
@@ -118,8 +125,8 @@ function makeStars(biz){
         title.style.fontWeight = 'normal';
         starDiv.appendChild(title);
         
-        sentStars.style.width = '200px';
-        starDiv.appendChild(sentStars);
+        sentimentStars.style.width = '200px';
+        starDiv.appendChild(sentimentStars);
         
         var title2 = document.createElement('h3');
         title2.innerHTML = "Ratings:"
@@ -132,24 +139,24 @@ function makeStars(biz){
         starDiv.appendChild(rateStars);
     }
     else{
-        var title2 = document.createElement('h3');
-        title2.innerHTML = "Ratings:"
-        title2.style.fontWeight = 'normal';
-        title2.style.display = 'inline';
-        starDiv.appendChild(title2);
+        var title = document.createElement('h3');
+        title.innerHTML = "Ratings:"
+        title.style.fontWeight = 'normal';
+        title.style.display = 'inline';
+        starDiv.appendChild(title);
         
         rateStars.style.width = '200px';
         starDiv.appendChild(rateStars);
         
-        var title = document.createElement('h3');
-        title.innerHTML = "Feels:";
-        title.style.display = 'inline';
-        title.style.fontWeight = 'normal';
-        starDiv.appendChild(title);
+        var title2 = document.createElement('h3');
+        title2.innerHTML = "Feels:";
+        title2.style.display = 'inline';
+        title2.style.fontWeight = 'normal';
+        starDiv.appendChild(title2);
         
-        sentStars.style.width = '150px';
-        sentStars.style.opacity = 0.5;
-        starDiv.appendChild(sentStars);
+        sentimentStars.style.width = '150px';
+        sentimentStars.style.opacity = 0.5;
+        starDiv.appendChild(sentimentStars);
     }
     
     return starDiv; 
