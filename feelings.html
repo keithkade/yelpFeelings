@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width; initial-scale=1.0">
+		<script src="feelings.js"></script>
+		<title>Eat Your Feelings</title>
+		<style type="text/css">
+		body {
+			font-family: Verdana;
+		}
+		#title {
+			font-size:300%;
+			color: #c41200;
+			padding-bottom: 10px;
+			border-bottom: 1px solid black;
+		}
+		h5 {
+			margin-bottom: 2px;
+		}
+		#goButton {
+			margin-top: 10px;
+		}
+		#resultsArea {
+			margin-top: 20px;
+		}
+		</style>
+	</head>
+	<body>
+		<h1 id="title">Eat Your Feelings</h1>
+		<h5>City:</h5>
+		<input type="radio" id="phoenixRadio" name="city" value="phoenix">Phoenix<br>
+		<input type="radio" id="vegasRadio" name="city" value="vegas">Las Vegas<br>
+		<h5>Filter by:</h5>
+		<input type="radio" id="ratingRadio" name="sortBy" value="phoenix">Rating<br>
+		<input type="radio" id="feelRadio" name="sortBy" value="vegas">Feels<br>
+		<input type="button" id="goButton" name="go" value="Go!" onclick="search()"></input>
+		<div id="resultsArea">
+		</div>
+	</body>
+</html>
