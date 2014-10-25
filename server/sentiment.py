@@ -3,7 +3,6 @@ __author__ = 'jtgoen'
 from nltk.classify import NaiveBayesClassifier
 from nltk.corpus import movie_reviews
 from utility import TextProcess
-import json
 
 
 def word_features(words):
