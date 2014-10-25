@@ -29,7 +29,13 @@ class Handler(BaseHTTPRequestHandler):
 
         #classify and sort
 
-        return json.dumps(relev_reviews)
+        self.send_response(200)
+        self.send_header('Content-type', 'application/json')
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.end_headers()
+        self.wfile.write(json.dumps(relev_reviews))
+
+        return
 
 if __name__ == '__main__':
     business_dict = dict()
