@@ -62,7 +62,6 @@ function search(){
     else
         bySentimentString = "False"
 
-
     theUrl = "http://162.242.240.131:4000?city="+city+"&bySentiment="+bySentimentString;
     console.log(theUrl);
     xmlHttp = new XMLHttpRequest();
@@ -70,11 +69,8 @@ function search(){
     xmlHttp.onreadystatechange = function (){
         if (xmlHttp.readyState==4) {
             console.log(xmlHttp.responseText);
+            populate(reviews);
         }
-        else {
-            console.log("readyState was not 4");
-        }
-        populate(reviews);
     }
     xmlHttp.send(null);
 }
