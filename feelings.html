@@ -8,6 +8,8 @@
 		<style type="text/css">
 		body {
 			font-family: Verdana;
+			margin: 0;
+			padding: 0;
 		}
 		#title {
 			font-size:300%;
@@ -18,24 +20,36 @@
 		h5 {
 			margin-bottom: 2px;
 		}
+		h3 {
+			margin-bottom: 2px;
+			margin-left: 10px;
+		}
 		#goButton {
 			margin-top: 10px;
 		}
 		#resultsArea {
 			margin-top: 20px;
 		}
+		#wrapper {
+			margin: 3%;
+		}
+		p {
+			margin-left: 10px;
+		}
 		</style>
 	</head>
 	<body>
-		<h1 id="title">Eat Your Feelings</h1>
-		<h5>City:</h5>
-		<input type="radio" id="phoenixRadio" name="city" value="phoenix">Phoenix<br>
-		<input type="radio" id="vegasRadio" name="city" value="vegas">Las Vegas<br>
-		<h5>Filter by:</h5>
-		<input type="radio" id="ratingRadio" name="sortBy" value="phoenix">Rating<br>
-		<input type="radio" id="feelRadio" name="sortBy" value="vegas">Feels<br>
-		<input type="button" id="goButton" name="go" value="Go!" onclick="search()"></input>
-		<div id="resultsArea">
+		<div id="wrapper">
+			<h1 id="title">Eat Your Feelings</h1>
+			<h5>City:</h5>
+			<input type="radio" id="phoenixRadio" name="city" value="phoenix">Phoenix<br>
+			<input type="radio" id="vegasRadio" name="city" value="vegas">Las Vegas<br>
+			<h5>Filter by:</h5>
+			<input type="radio" id="ratingRadio" name="sortBy" value="phoenix">Rating<br>
+			<input type="radio" id="feelRadio" name="sortBy" value="vegas">Feels<br>
+			<input type="button" id="goButton" name="go" value="Go!" onclick="search()"></input>
+			<div id="resultsArea">
+			</div>
 		</div>
 	</body>
 </html>

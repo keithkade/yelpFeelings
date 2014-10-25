@@ -65,13 +65,33 @@ function populate(bizs){
         var bDiv = document.createElement('div');
         
         var name = document.createElement('h1');
-        name.style.margin = "2px";
+        name.style.margin = "10px";
         name.innerHTML = curBiz.name;
         
         var starsDiv = makeStars(curBiz);
 
+        var address = document.createElement('p');
+        address.style.marginTop = "-95px";
+        address.style.marginRight = "5px";
+        address.style.float = "right";
+        var addrStr = curBiz.full_address;
+        addrStr = addrStr.replace('\n','<br>');
+        address.innerHTML = addrStr;
+
+        var cats = document.createElement('p');
+        var inner = "";
+        if (curBiz.categories.length > 0)
+            inner += "Categories: ";
+        for (j in curBiz.categories){
+            inner += curBiz.categories[j] + ", ";
+        }
+        inner = inner.substring(0, inner.length - 2);
+        cats.innerHTML = inner;
+
         bDiv.appendChild(name);
         bDiv.appendChild(starsDiv);
+        bDiv.appendChild(address);
+        bDiv.appendChild(cats);
 
         bDiv.style.border = "1px solid black";
         bDiv.style.marginBottom = "4px";
@@ -86,93 +106,76 @@ function makeStars(biz){
     var sentStars = document.createElement('img');
     var rateStars = document.createElement('img');
 
-    //bad code starts here
-    switch (String(biz.sentiment)){
-        case '5':
-            sentStars.setAttribute('src','img/5stars.png');
-            break;
-        case '4.5':
-            sentStars.setAttribute('src','img/45stars.png');
-            break;
-        case '4':
-            sentStars.setAttribute('src','img/4stars.png');
-            break;
-        case '3.5':
-            sentStars.setAttribute('src','img/35stars.png');
-            break;
-        case '3':
-            sentStars.setAttribute('src','img/3stars.png');
-            break;
-        case '2.5':
-            sentStars.setAttribute('src','img/25stars.png');
-            break;
-        case '2':
-            sentStars.setAttribute('src','img/2stars.png');
-            break;    
-        case '1.5':
-            sentStars.setAttribute('src','img/15stars.png');
-            break;
-        case '1':
-            sentStars.setAttribute('src','img/1stars.png');
-            break;                                            
-        default:
-            sentStars.setAttribute('src','img/1stars.png');
-            break;          
-    }
-    switch (String(biz.stars)){
-        case '5':
-            rateStars.setAttribute('src','img/5stars.png');
-            break;
-        case '4.5':
-            rateStars.setAttribute('src','img/45stars.png');
-            break;
-        case '4':
-            rateStars.setAttribute('src','img/4stars.png');
-            break;
-        case '3.5':
-            rateStars.setAttribute('src','img/35stars.png');
-            break;
-        case '3':
-            rateStars.setAttribute('src','img/3stars.png');
-            break;
-        case '2.5':
-            rateStars.setAttribute('src','img/25stars.png');
-            break;
-        case '2':
-            rateStars.setAttribute('src','img/2stars.png');
-            break;    
-        case '1.5':
-            rateStars.setAttribute('src','img/15stars.png');
-            break;
-        case '1':
-            rateStars.setAttribute('src','img/1stars.png');
-            break;                                            
-        default:
-            rateStars.setAttribute('src','img/1stars.png');
-            break;                                     
-    }
+    var sentImg = getStarImg(biz.sentiment);
+    sentStars.setAttribute('src',sentImg);
+    var rateImg = getStarImg(biz.stars);
+    rateStars.setAttribute('src',rateImg);    
+    
     if (bySentiment){
         var title = document.createElement('h3');
-        title.innerHTML = "Sentiment:";
+        title.innerHTML = "Feels:";
+        title.style.display = 'inline';
+        title.style.fontWeight = 'normal';
         starDiv.appendChild(title);
+        
+        sentStars.style.width = '200px';
         starDiv.appendChild(sentStars);
+        
         var title2 = document.createElement('h3');
-        title2.innerHTML = "Rating:"
+        title2.innerHTML = "Ratings:"
+        title2.style.fontWeight = 'normal';
+        title2.style.display = 'inline';
         starDiv.appendChild(title2);
+        
         rateStars.style.opacity = 0.5;
+        rateStars.style.width = '150px';
         starDiv.appendChild(rateStars);
     }
     else{
         var title2 = document.createElement('h3');
-        title2.innerHTML = "Rating:"
+        title2.innerHTML = "Ratings:"
+        title2.style.fontWeight = 'normal';
+        title2.style.display = 'inline';
         starDiv.appendChild(title2);
+        
+        rateStars.style.width = '200px';
         starDiv.appendChild(rateStars);
+        
         var title = document.createElement('h3');
-        title.innerHTML = "Sentiment:";
+        title.innerHTML = "Feels:";
+        title.style.display = 'inline';
+        title.style.fontWeight = 'normal';
         starDiv.appendChild(title);
+        
+        sentStars.style.width = '150px';
         sentStars.style.opacity = 0.5;
         starDiv.appendChild(sentStars);
     }
     
     return starDiv; 
+}
+
+function getStarImg(numStar){
+    switch (String(numStar)){
+        case '5':
+            return 'img/5stars.png';
+        case '4.5':
+            return 'img/45stars.png';
+        case '4':
+            return 'img/4stars.png';
+        case '3.5':
+            return 'img/35stars.png';
+        case '3':
+            return 'img/3stars.png';
+        case '2.5':
+            return 'img/25stars.png';
+        case '2':
+            return 'img/2stars.png';
+        case '1.5':
+            return 'img/15stars.png';
+        case '1':
+            return 'img/1stars.png';
+        default:
+            return 'img/1stars.png';
+    }
 }
