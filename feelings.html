@@ -3,7 +3,6 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width; initial-scale=1.0">
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 		<script src="feelings.js"></script>
 		<title>Eat Your Feelings</title>
 		<style type="text/css">
@@ -17,11 +16,12 @@
 			color: #c41200;
 			padding-bottom: 10px;
 			border-bottom: 1px solid black;
-			width: 500px;
+			width: 480px;
 		}
 		#hamster {
 			position: absolute;
 			top: 10px;
+			height: 200px;
 			left: 610px;
 			border: 4px solid #c41200;
 		}
@@ -41,6 +41,9 @@
 		#wrapper {
 			margin: 3%;
 		}
+		#hodor {
+			display: none;
+		}
 		p {
 			margin-left: 10px;
 		}
@@ -50,10 +53,12 @@
 		<div id="wrapper">
 			<h1 id="title">Eat Your Feelings</h1>
 			<img id="hamster" src="img/hamster.png"/> 
+			<div id="hodor">
 			<h5>City:</h5>
 			<input type="radio" id="phoenixRadio" name="city" value="phoenix">Phoenix<br>
 			<input type="radio" id="vegasRadio" name="city" value="vegas">Las Vegas<br>
-			<h5>Filter by:</h5>
+			</div>
+			<h5>Sort by:</h5>
 			<input type="radio" id="ratingRadio" name="sortBy" value="phoenix">Rating<br>
 			<input type="radio" id="feelRadio" name="sortBy" value="vegas">Feels<br>
 			<input type="button" id="goButton" name="go" value="Go!" onclick="search()"></input>
