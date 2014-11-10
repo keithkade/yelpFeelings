@@ -22,7 +22,7 @@ classifier = NaiveBayesClassifier.train(train_features)
 reviewList = []
 reviewContent = {}
 print "starting sentiment"
-for line in open('yelp_academic_dataset_review.json', 'r'):
+for line in open('../../data/yelp_academic_dataset_review.json', 'r'):
     review_json = TextProcess.read_line(line)
     review_id = review_json['review_id']
     reviewContent[review_id] = review_json['text']
@@ -31,44 +31,26 @@ for line in open('yelp_academic_dataset_review.json', 'r'):
     reviewList.append((review_id, classifier.posScore(word_features(TextProcess.tokenize(review_json)))))
 
 print "done with sentiment"
-reviewList = sorted(reviewList, key=lambda count: count[1], reverse=True)
+reviewList = sorted(reviewList, key=lambda count: count[1])
 
-nchunks = 9
-chunksize,remainder = divmod(len(reviewList),nchunks)
-sizes = [chunksize]*nchunks
-if remainder:
-    sizes[-remainder:] = [chunksize+1 for x in xrange(remainder)]
-idx = 0
-result = []
-for s in sizes:
-    result.append(reviewList[idx:idx+s])
-    idx += s
+
+#1 110772, 2 102737, 3 163761, 4 342143, 5 406045
 
 sentDict = {}
-for i in range(0, 9):
-    curChunk = result[i]
-    #for j in curChunk:
-    for j in range (0, len(curChunk)):
-        jM = list(curChunk[j])
-        if i == 0:
-            jM[1] = 5
-        if i == 1:
-            jM[1] = 4.5
-        if i == 2:
-            jM[1] = 4
-        if i == 3:
-            jM[1] = 3.5
-        if i == 4:
-            jM[1] = 3
-        if i == 5:
-            jM[1] = 2.5
-        if i == 6:
-            jM[1] = 2
-        if i == 7:
-            jM[1] = 1.5
-        if i == 8:
-            jM[1] = 1
-        sentDict[jM[0]] = jM[1]
+for i in range(0, len(reviewList)):
+    cur = reviewList[i]
+    val = 0
+    if i <= 110772:
+        val = 1
+    elif i <= 102737+110772:
+        val = 2
+    elif i <= 102737+110772+163761:
+        val = 3
+    elif i <= 102737+110772+163761+342143:
+        val = 4
+    else:
+        val = 5
+    sentDict[cur[0]] = val
 
 f=open('reviewSentimentStars.json', 'w+')
 print >>f, json.dumps(sentDict)
