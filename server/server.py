@@ -46,21 +46,6 @@ class Handler(BaseHTTPRequestHandler):
 
         return
 
-if __name__ == '__main__':
-    business_dict = dict()
-    review_dict = dict()
-    sentiment_dict = dict()
-
-    for line in open('yelp_academic_dataset_business.json', 'r'):
-        business_json = TextProcess.read_line(line)
-        business_dict[business_json['business_id']] = business_json
-
-    for line in open('reviews_subset.json', 'r'):
-        review_json = TextProcess.read_line(line)
-        review_dict[review_json['review_id']] = review_json
-
-    sentiment_dict = json.loads(open('reviewSentimentStars.json').read())
-
 try:
     #Create a web server and define the handler to manage the
     #incoming request
