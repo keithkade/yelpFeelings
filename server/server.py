@@ -17,8 +17,7 @@ class Handler(BaseHTTPRequestHandler):
         city = query_dict['city'][0]
         sort = query_dict['sort'][0]
 
-        by_sentiment = False
-        if query_dict['sort'][0] == "Highest Sentiment":
+        if sort == "Highest Sentiment":
             by_sentiment = True
 
         print "Got a GET request!!!!!!"
@@ -32,16 +31,28 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header('Access-Control-Allow-Origin', '*')
         self.end_headers()
 
-        if by_sentiment:
-            print "BY SENTIMENT"
+        city_businesses = filter(lambda business: city in business['full_address'], business_sentiment)
+
+        if sort == "Highest Sentiment":
+            print "Highest Sentiment"
             self.wfile.write(
                 json.dumps(
-                    sorted(business_sentiment, key=lambda business: business['sentiment'], reverse=True)[:10]))
-        else:
-            print "BY STARS"
+                    sorted(city_businesses, key=lambda business: business['sentiment'], reverse=True)[:10]))
+        elif sort == "Lowest Sentiment":
+            print "Lowest Sentiment"
             self.wfile.write(
                 json.dumps(
-                    sorted(business_sentiment, key=lambda business: business['stars'], reverse=True)[:10]))
+                    sorted(city_businesses, key=lambda business: business['sentiment'])[:10]))
+        elif sort == "Highest Rating":
+            print "Highest Rating"
+            self.wfile.write(
+                json.dumps(
+                    sorted(city_businesses, key=lambda business: business['stars'], reverse=True)[:10]))
+        elif sort == "Lowest Rating":
+            print "Lowest Rating"
+            self.wfile.write(
+                json.dumps(
+                    sorted(city_businesses, key=lambda business: business['stars'])[:10]))
 
         return
 
