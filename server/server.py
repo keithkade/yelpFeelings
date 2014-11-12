@@ -4,7 +4,6 @@ __author__ = 'jtgoen'
 
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 import urlparse
-from utility import TextProcess
 import json
 
 
@@ -25,24 +24,23 @@ class Handler(BaseHTTPRequestHandler):
         print "Got a GET request!!!!!!"
         print city
 
-        business_sentiment_json = json.loads(open('business_sentiment.json').read())
+        business_sentiment = json.loads(open('business_sentiment.json').read())
 
         self.send_response(200)
         self.send_header('Content-type', 'application/json')
         self.send_header('Access-Control-Allow-Origin', '*')
         self.end_headers()
+
         if by_sentiment:
             print "BY SENTIMENT"
             self.wfile.write(
                 json.dumps(
-                    sorted(business_sentiment_json,
-                           key=lambda businesses: businesses[1]['sentiment'], reverse=True)[:10]))
+                    sorted(business_sentiment, key=lambda business: business['sentiment'], reverse=True)[:10]))
         else:
             print "BY STARS"
             self.wfile.write(
                 json.dumps(
-                    sorted(business_sentiment_json,
-                           key=lambda businesses: businesses[1]['stars'], reverse=True)[:10]))
+                    sorted(business_sentiment, key=lambda business: business['stars'], reverse=True)[:10]))
 
         return
 

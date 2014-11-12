@@ -17,7 +17,7 @@ for line in open('reviews_subset.json', 'r'):
 
 sentiment_dict = json.loads(open('reviewSentimentStars.json').read())
 
-business_sentiments = dict()
+business_sentiments = []
 for business in business_dict:
     num_reviews = 0
     star_aggregate = 0
@@ -38,13 +38,15 @@ for business in business_dict:
             else:
                 star_average = star_aggregate / num_reviews
                 sentiment_average = sentiment_aggregate / num_reviews
-                business_sentiments[business] = dict(business_id=business,
-                                                     full_address=business_dict[business]['full_address'],
-                                                     categories=business_dict[business]['categories'],
-                                                     snippets=snippets,
-                                                     name=business_dict[business]['name'],
-                                                     stars=star_average,
-                                                     sentiment=sentiment_average)
+                business_sentiments.append(
+                    dict(business_id=business,
+                         full_address=business_dict[business]['full_address'],
+                         categories=business_dict[business]['categories'],
+                         snippets=snippets,
+                         name=business_dict[business]['name'],
+                         stars=star_average,
+                         sentiment=sentiment_average)
+                )
 
 business_file = open('business_sentiment.json', 'w+')
 print >> business_file, json.dumps(business_sentiments)
