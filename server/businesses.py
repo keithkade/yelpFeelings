@@ -33,20 +33,21 @@ for business in business_dict:
             sentiment_aggregate += sentiment_dict[review_dict[review]['review_id']]
             if num_reviews < 5:
                 snippets.append(review_dict[review]['text'][:70]+'...')
-            if num_reviews == 0:
-                pass
-            else:
-                star_average = star_aggregate / num_reviews
-                sentiment_average = sentiment_aggregate / num_reviews
-                business_sentiments.append(
-                    dict(business_id=business,
-                         full_address=business_dict[business]['full_address'],
-                         categories=business_dict[business]['categories'],
-                         snippets=snippets,
-                         name=business_dict[business]['name'],
-                         stars=star_average,
-                         sentiment=sentiment_average)
-                )
+
+    if num_reviews == 0:
+        pass
+    else:
+        star_average = star_aggregate / num_reviews
+        sentiment_average = sentiment_aggregate / num_reviews
+        business_sentiments.append(
+            dict(business_id=business,
+                 full_address=business_dict[business]['full_address'],
+                 categories=business_dict[business]['categories'],
+                 snippets=snippets,
+                 name=business_dict[business]['name'],
+                 stars=star_average,
+                 sentiment=sentiment_average)
+        )
 
 business_file = open('business_sentiment.json', 'w+')
 print >> business_file, json.dumps(business_sentiments)
