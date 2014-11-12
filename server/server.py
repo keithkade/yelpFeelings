@@ -17,69 +17,32 @@ class Handler(BaseHTTPRequestHandler):
         query_dict = urlparse.parse_qs(urlparse.urlparse(self.path).query)
         city = query_dict['city'][0]
         print query_dict['bySentiment'][0]
-        bySentiment = False
+
+        by_sentiment = False
         if query_dict['bySentiment'][0] == "True":
-            bySentiment = True
+            by_sentiment = True
+
         print "Got a GET request!!!!!!"
         print city
 
-        relev_businesses = []
-        for business in business_dict:
-            relev_businesses.append(business_dict[business]['business_id'])
-            #if business_dict[business]['city'] == city:
-                #relev_businesses.append(business_dict[business]['business_id'])
-
-        relev_reviews = dict()
-        for review in review_dict:
-            if review_dict[review]['business_id'] in relev_businesses:
-                relev_reviews[review_dict[review]['review_id']] = review_dict[review]
-
-        #classify and sort
-        relev_sentiments = []
-        for business in relev_businesses:
-            num_reviews = 0
-            star_aggregate = 0
-            sentiment_aggregate = 0
-            star_average = 0
-            sentiment_average = 0
-            snippets = []
-
-            for review in relev_reviews:
-                if relev_reviews[review]['business_id'] == business:
-                    num_reviews += 1
-                    star_aggregate += relev_reviews[review]['stars']
-                    sentiment_aggregate += sentiment_dict[relev_reviews[review]['review_id']]
-                    if num_reviews < 5:
-                        snippets.append(relev_reviews[review]['text'][:70]+'...')
-            if num_reviews == 0:
-                pass
-            else:
-                star_average = star_aggregate / num_reviews
-                sentiment_average = sentiment_aggregate / num_reviews
-                relev_sentiments.append(
-                    dict(business_id=business,
-                         full_address=business_dict[business]['full_address'],
-                         categories=business_dict[business]['categories'],
-                         snippets=snippets,
-                         name=business_dict[business]['name'],
-                         stars=star_average,
-                         sentiment=sentiment_average)
-                )
+        business_sentiment_json = json.loads(open('business_sentiment.json').read())
 
         self.send_response(200)
         self.send_header('Content-type', 'application/json')
         self.send_header('Access-Control-Allow-Origin', '*')
         self.end_headers()
-        if bySentiment:
+        if by_sentiment:
             print "BY SENTIMENT"
             self.wfile.write(
                 json.dumps(
-                    sorted(relev_sentiments, key=lambda company: company['sentiment'], reverse=True)[:10]))
+                    sorted(business_sentiment_json,
+                           key=lambda businesses: businesses[1]['sentiment'], reverse=True)[:10]))
         else:
             print "BY STARS"
             self.wfile.write(
                 json.dumps(
-                    sorted(relev_sentiments, key=lambda company: company['stars'], reverse=True)[:10]))
+                    sorted(business_sentiment_json,
+                           key=lambda businesses: businesses[1]['stars'], reverse=True)[:10]))
 
         return
 
