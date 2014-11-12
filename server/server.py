@@ -15,14 +15,15 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         query_dict = urlparse.parse_qs(urlparse.urlparse(self.path).query)
         city = query_dict['city'][0]
-        print query_dict['bySentiment'][0]
+        sort = query_dict['sort'][0]
 
         by_sentiment = False
-        if query_dict['bySentiment'][0] == "True":
+        if query_dict['sort'][0] == "Highest Sentiment":
             by_sentiment = True
 
         print "Got a GET request!!!!!!"
         print city
+        print sort
 
         business_sentiment = json.loads(open('business_sentiment.json').read())
 
