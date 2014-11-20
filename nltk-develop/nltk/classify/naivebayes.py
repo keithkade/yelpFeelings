@@ -85,14 +85,10 @@ class NaiveBayesClassifier(ClassifierI):
         return self._labels
 
     def classify(self, featureset):
-        return self.prob_classify(featureset).values()[1]
-        print self.prob_classify(featureset).samples()
         return self.prob_classify(featureset).max()
 
     def posScore(self, featureset):
         return self.prob_classify(featureset).values()[1]
-        #print self.prob_classify(featureset).samples()
-        #return self.prob_classify(featureset).max()
 
     def prob_classify(self, featureset):
         # Discard any feature names that we've never seen before.
@@ -125,9 +121,7 @@ class NaiveBayesClassifier(ClassifierI):
                     # NaiveBayesClassifier.train().
                     logprob[label] += sum_logs([]) # = -INF.
 
-        #print logprob
-        asdf = DictionaryProbDist(logprob, normalize=True, log=True)
-        return asdf
+        return DictionaryProbDist(logprob, normalize=True, log=True)
 
     def show_most_informative_features(self, n=10):
         # Determine the most relevant features, and display them.
