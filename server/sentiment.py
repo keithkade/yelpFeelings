@@ -16,6 +16,8 @@ positive_features = [(word_features(movie_reviews.words(fileids=[f])), 'pos') fo
 
 train_features = negative_features + positive_features
 
+print len(train_features)
+
 print "start training"
 classifier = NaiveBayesClassifier.train(train_features)
 
