@@ -89,6 +89,9 @@ class NaiveBayesClassifier(ClassifierI):
 
     def posScore(self, featureset):
         return self.prob_classify(featureset).values()[1]
+    
+    def negScore(self, featureset):
+        return self.prob_classify(featureset).values()[0]
 
     def prob_classify(self, featureset):
         # Discard any feature names that we've never seen before.

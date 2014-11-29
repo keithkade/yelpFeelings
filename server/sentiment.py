@@ -29,7 +29,11 @@ for line in open('../../data/yelp_academic_dataset_review.json', 'r'):
     review_id = review_json['review_id']
     reviewContent[review_id] = review_json['text']
 
-    #print "Review %s score: %s" % (review_id, classifier.posScore(word_features(TextProcess.tokenize(review_json))))
+    #print "==="
+    #print review_json['text']
+    #print "Review %s pos score: %s" % (review_id, classifier.posScore(word_features(TextProcess.tokenize(review_json))))
+    #print "Review %s neg score: %s" % (review_id, classifier.negScore(word_features(TextProcess.tokenize(review_json))))
+    #print "==="
     reviewList.append((review_id, classifier.posScore(word_features(TextProcess.tokenize(review_json)))))
 
 print "done with sentiment"
