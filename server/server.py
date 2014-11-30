@@ -58,7 +58,7 @@ class Handler(BaseHTTPRequestHandler):
             self.wfile.write(
                 json.dumps(
                     sorted(city_businesses,
-                           key=lambda business: abs(business['stars'] - business['sentiment']))[:10], reverse=True))
+                           key=lambda business: abs(business['stars'] - business['sentiment']), reverse=True)[:10]))
 
         return
 
