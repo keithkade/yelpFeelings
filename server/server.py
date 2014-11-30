@@ -57,7 +57,8 @@ class Handler(BaseHTTPRequestHandler):
             print "Most Controversial"
             self.wfile.write(
                 json.dumps(
-                    sorted(city_businesses, key=lambda business: abs(business['stars'] - business['sentiment']))[:10]))
+                    sorted(city_businesses,
+                           key=lambda business: abs(business['stars'] - business['sentiment']))[:10], reverse=True))
 
         return
 
