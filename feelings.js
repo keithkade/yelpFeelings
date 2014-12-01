@@ -128,7 +128,17 @@ function populate(bizs){
             var reviewSniptrim = document.createElement('span');
 
             reviewSnipfull.innerHTML = "\"" + curBiz.snippets[j] + "\"" + "<br>";
-            reviewSniptrim.innerHTML = "\"" + curBiz.snippets[j].substring(0,curBiz.snippets[j].indexOf(" ", 50)) + "...\"" + "<br>";
+            //make sure we don't trim in the middle of a span
+            if (curBiz.snippets[j].indexOf("<", 40) != -1 && curBiz.snippets[j].indexOf("<", 40) <= 50){
+                reviewSniptrim.innerHTML = "\"" + curBiz.snippets[j].substring(0,curBiz.snippets[j].indexOf("<\/span>", 40)+7) + "...\"" + "<br>";
+            }
+            //if there is a span encased trim less
+            else if (curBiz.snippets[j].indexOf("<") != -1){
+                reviewSniptrim.innerHTML = "\"" + curBiz.snippets[j].substring(0,curBiz.snippets[j].indexOf(" ", 70)) + "...\"" + "<br>";
+            }
+            else {
+                reviewSniptrim.innerHTML = "\"" + curBiz.snippets[j].substring(0,curBiz.snippets[j].indexOf(" ", 50)) + "...\"" + "<br>";
+            }
 
             reviewSnipSpan.setAttribute("onmouseover", "onSpanMouseOver(\""+curBiz.business_id+uniqueID+"\")"); 
             reviewSnipSpan.setAttribute("onmouseout", "onSpanMouseOut(\""+curBiz.business_id+uniqueID+"\")"); 
