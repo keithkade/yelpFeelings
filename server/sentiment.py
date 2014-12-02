@@ -11,10 +11,26 @@ def word_features(words):
 negative_ids = movie_reviews.fileids('neg')
 positive_ids = movie_reviews.fileids('pos')
 
-negative_features = [(word_features(movie_reviews.words(fileids=[f])), 'neg') for f in negative_ids]
-positive_features = [(word_features(movie_reviews.words(fileids=[f])), 'pos') for f in positive_ids]
 
-train_features = negative_features + positive_features
+negReviews = []
+for line in open('negReviews.json'):
+    wordsDict = {}
+    for word in json.loads(line)['text'].split():
+        wordsDict[word] = True
+    negReviews.append((wordsDict,'neg'))
+
+posReviews = []
+for line in open('posReviews.json'):
+    wordsDict = {}
+    for word in json.loads(line)['text'].split():
+        wordsDict[word] = True
+    posReviews.append((wordsDict,'pos'))
+
+#negative_features = [(word_features(movie_reviews.words(fileids=[f])), 'neg') for f in negative_ids]
+#positive_features = [(word_features(movie_reviews.words(fileids=[f])), 'pos') for f in positive_ids]
+
+#train_features = negative_features + positive_features
+train_features = negReviews + posReviews
 
 print len(train_features)
 
