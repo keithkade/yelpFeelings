@@ -13,14 +13,22 @@ positive_ids = movie_reviews.fileids('pos')
 
 
 negReviews = []
+#reviewCount = 0
 for line in open('negReviews.json'):
+#    reviewCount+=1
+#    if reviewCount > 90:
+#        break
     wordsDict = {}
     for word in json.loads(line)['text'].split():
         wordsDict[word] = True
     negReviews.append((wordsDict,'neg'))
 
 posReviews = []
+#reviewCount = 0
 for line in open('posReviews.json'):
+#    reviewCount+=1
+#    if reviewCount > 90:
+#        break
     wordsDict = {}
     for word in json.loads(line)['text'].split():
         wordsDict[word] = True
@@ -45,14 +53,19 @@ for line in open('../../data/yelp_academic_dataset_review.json', 'r'):
     review_id = review_json['review_id']
     reviewContent[review_id] = review_json['text']
 
+    #if "Loved my haircut" in review_json['text']:
     #print "==="
-    #print review_json['text']
+    #print review_json
     #print "Review %s pos score: %s" % (review_id, classifier.posScore(word_features(TextProcess.tokenize(review_json))))
     #print "Review %s neg score: %s" % (review_id, classifier.negScore(word_features(TextProcess.tokenize(review_json))))
     #print "==="
+
     reviewList.append((review_id, classifier.posScore(word_features(TextProcess.tokenize(review_json)))))
 
 print "done with sentiment"
+for pair in classifier.most_informative_features(100):
+    print pair[0]
+
 reviewList = sorted(reviewList, key=lambda count: count[1])
 
 
