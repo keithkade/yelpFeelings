@@ -65,7 +65,7 @@ function populate(bizs){
     for (var i in bizs){
         var curBiz = bizs[i];
         var singleBizDiv = document.createElement('div');
-        singleBizDiv.style.width = "900px";
+        singleBizDiv.style.width = "1000px";
         
         var name = document.createElement('h1');
         name.style.width = "500px";
