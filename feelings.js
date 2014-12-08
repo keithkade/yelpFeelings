@@ -1,12 +1,17 @@
 /*global console, document, XMLHttpRequest, window*/
-// GLOBAL VARIABLES
+
+/*
+Elevator Pitch:
+
+In our project, we conduct sentiment analysis on the review text of Yelp business reviews from the Yelp academic dataset. We do this in hopes of finding differences in the way people talk about a businesses and the way people rate them. Our app allows users to sort by either the original rating or by sentiment (feels). We use Naive Bayes, which has been trained on a set of pre-classified documents to assign positivity scores to reviews. We then seperate the scores into tiers to mirror the standard star ratings.
+
+*/
+
 var bySentiment = true;
 var globalSnips = {};
 var globalBizs = {};
 var xmlHttp = null;    
-var posWords = ["happy","alive","good","understanding","great","playful","calm","confident","courageous","peaceful","reliable","joyous","energetic","easy","lucky","liberated","comfortable","amazed","fortunate","optimistic","pleased","delighted","encouraged","sympathetic","overjoyed","clever","gleeful","satisfied","thankful","content","receptive","important","accepting","festive","spirited","certain","kind","ecstatic","thrilled","relaxed","satisfied","wonderful","serene","glad","free","easy ","cheerful","bright","sunny","blessed","merry","reassured ","elated","jubilant","love","interested","positive","loving","eager","considerate","affectionate","fascinated","devoted","inquisitive","inspired","attracted","determined","dynamic","passionate","excited","tenacious","admiration","engrossed","enthusiastic","hardy","warm","curious","bold","secure","touched ","brave","sympathy","close","challenged","loved","optimistic","comforted","confident","hopeful"];
-var negWords = ["angry","depressed","confused","helpless","irritated","lousy","upset","incapable","enraged","disappointed","doubtful","alone","hostile","discouraged","uncertain","paralyzed","insulting","ashamed","indecisive","fatigued","sore","powerless","perplexed","useless","annoyed","diminished","embarrassed","inferior","upset","guilty","hesitant","vulnerable","hateful","dissatisfied","shy","empty","unpleasant","miserable","stupefied","forced","offensive","detestable","disillusioned","hesitant","bitter","repugnant","unbelieving","despair","aggressive","despicable","skeptical","frustrated","resentful","disgusting","distrustful","distressed","inflamed","abominable","misgiving","woeful","provoked","terrible","lost","pathetic","unsure","tragic","infuriated","sulky","uneasy","cross","bad","pessimistic","dominated","loss","tense","boiling","fuming","indignant","indifferent","afraid","hurt","sad","insensitive","fearful","crushed","tearful","dull","terrified","tormented","sorrowful","nonchalant","suspicious","deprived","pained","neutral","anxious","pained","grief","reserved","alarmed","tortured","anguish","weary","panic","dejected","desolate","bored","nervous","rejected","desperate","preoccupied","scared","injured","pessimistic","cold","worried","offended","unhappy","disinterested","frightened","afflicted","lonely","lifeless","timid","aching","grieved","shaky","victimized","mournful","restless","heartbroken","dismayed","doubtful","agonized","threatened","appalled","cowardly","humiliated","quaking","wronged","menaced","alienated","wary","horrible","worst","scam","bullshit"];
-
+var emoWords = ["happy","alive","good","understanding","great","playful","calm","confident","courageous","peaceful","reliable","joyous","energetic","easy","lucky","liberated","comfortable","amazed","fortunate","optimistic","pleased","delighted","encouraged","sympathetic","overjoyed","clever","gleeful","satisfied","thankful","content","receptive","important","accepting","festive","spirited","certain","kind","ecstatic","thrilled","relaxed","satisfied","wonderful","serene","glad","free","easy ","cheerful","bright","sunny","blessed","merry","reassured ","elated","jubilant","love","interested","positive","loving","eager","considerate","affectionate","fascinated","devoted","inquisitive","inspired","attracted","determined","dynamic","passionate","excited","tenacious","admiration","engrossed","enthusiastic","hardy","warm","curious","bold","secure","touched ","brave","sympathy","close","challenged","loved","optimistic","comforted","confident","hopeful"];
 
 window.onload = function (){
     search();
@@ -47,6 +52,14 @@ function search(){
     reviewsDiv.appendChild(loadingP);
 }
 
+function sanitize(word){   
+    var puncList = ['.',',','(',')','?','!',':'];
+    for (var i in puncList){
+        word = word.replace(puncList[i], "");
+    }
+    return word.toLowerCase();
+}
+
 function onSpanMouseOver(reviewID){
     var elem = document.getElementById(reviewID).childNodes;
     elem[0].style.display = "none";
@@ -85,7 +98,7 @@ function populate(bizs){
         var cats = document.createElement('p');
         var inner = "";
         if (curBiz.categories.length > 0)
-            inner += "Categories: ";
+            inner += "<b>Categories:</b> ";
         for (var j in curBiz.categories){
             inner += curBiz.categories[j] + ", ";
         }
@@ -98,28 +111,20 @@ function populate(bizs){
         var curWord, index, index2, choppedStr;
         for (j in curBiz.snippets){
             var wordList = curBiz.snippets[j].split(" ");
+            var lastIndex = 0;
             for (var wi in wordList){
                 curWord = wordList[wi];
-                for (var wp in posWords){
-                    if (curWord.toLowerCase() == posWords[wp]){
-                        index = curBiz.snippets[j].indexOf(curWord);
+                for (var w in emoWords){
+                    if (sanitize(curWord) == emoWords[w]){
+                        index = curBiz.snippets[j].indexOf(curWord, lastIndex);
                         index2 = index+curWord.length+1;
                         choppedStr = curBiz.snippets[j].split("");
-                        choppedStr.splice(index, 0, "<span class=\"posWord\">");
+                        choppedStr.splice(index, 0, "<span class=\"emoWord\">");
                         choppedStr.splice(index2, 0, "</span>");
                         curBiz.snippets[j] = choppedStr.join("");
+                        lastIndex += index;
                     }
-                }
-                for (var wn in negWords){
-                    if (curWord.toLowerCase() == negWords[wn]){
-                        index = curBiz.snippets[j].indexOf(curWord);
-                        index2 = index+curWord.length+1;
-                        choppedStr = curBiz.snippets[j].split("");
-                        choppedStr.splice(index, 0, "<span class=\"negWord\">");
-                        choppedStr.splice(index2, 0, "</span>");
-                        curBiz.snippets[j] = choppedStr.join("");
-                    }
-                }                
+                }              
             }
             
             var reviewSnipDiv = document.createElement('div');
@@ -218,6 +223,12 @@ function makeStars(biz){
         sentimentStars.style.opacity = 0.5;
         starDiv.appendChild(sentimentStars);
     }
+
+    var confidence = document.createElement('p');
+    confidence.className = "confidence";
+    biz.confidence = 90;
+    confidence.innerHTML = "We are <b>" + biz.confidence + "</b>% confident in the feels score";
+    starDiv.appendChild(confidence);
     
     return starDiv; 
 }
