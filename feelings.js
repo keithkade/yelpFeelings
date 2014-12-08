@@ -122,7 +122,7 @@ function populate(bizs){
                         choppedStr.splice(index, 0, "<span class=\"emoWord\">");
                         choppedStr.splice(index2, 0, "</span>");
                         curBiz.snippets[j] = choppedStr.join("");
-                        lastIndex += index;
+                        lastIndex = index+1;
                     }
                 }              
             }
