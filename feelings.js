@@ -3,7 +3,7 @@
 /*
 Elevator Pitch:
 
-In our project, we conduct sentiment analysis on the review text of Yelp business reviews from the Yelp academic dataset. We do this in hopes of finding differences in the way people talk about a businesses and the way people rate them. Our app allows users to sort by either the original rating or by sentiment (feels). We use Naive Bayes, which has been trained on a set of pre-classified documents to assign positivity scores to reviews. We then seperate the scores into tiers to mirror the standard star ratings.
+In our project, we conducted sentiment analysis on the review text of Yelp reviews. We did this in hopes of finding differences in the way people talk about a businesses and the way people rate them. We used Naive Bayes, which we trained on a set of hand-classified reviews to assign positivity scores. We then seperated the scores into tiers to mirror the standard star ratings. The words you see highlighted are some of the more polarizing words from our training set.
 
 */
 
