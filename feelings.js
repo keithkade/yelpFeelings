@@ -3,7 +3,7 @@
 /*
 Elevator Pitch:
 
-In our project, we conducted sentiment analysis on the review text of Yelp reviews. We did this in hopes of finding differences in the way people talk about a businesses and the way people rate them. We used Naive Bayes, which we trained on a set of hand-classified reviews to assign positivity scores. We then seperated the scores into tiers to mirror the standard star ratings. The words you see highlighted are some of the more polarizing words from our training set.
+In our project, we conducted sentiment analysis on the text of Yelp reviews. We did this in hopes of finding differences in the way people talk about businesses and the way people rate them. We used Naive Bayes, which we trained on a set of hand-classified reviews to assign positivity scores. We then seperated the scores into tiers to mirror the standard star ratings. The words you see highlighted are some of the more polarizing words from our training set.
 
 */
 
@@ -11,7 +11,7 @@ var bySentiment = true;
 var globalSnips = {};
 var globalBizs = {};
 var xmlHttp = null;    
-var emoWords = ["worst","returned","mediocre","horrible","overcooked","worse","money","bites","empty","employees","dirty","answer","terrible","wonderful","rude","tasty","lacked","card","shit","crap","waited","woman","dry","15","manager","received","complained","uncomfortable","raw","dollars","returning","handle","cheesy","what's","basically","gonna","gas","charged","sent","original","phone","poor","until","unless","apparently","overpriced","avoid","delicious","paid","30","nasty","blah","sick","mins","soul","40","express","currently","correct","anymore","fed","employee","send","suck","entered","voice","foot","apologize","spoke","ran","begin","eggs","favorite","customer","club","due","awful","excited","cream","minutes","calling","sucks","helping","none","possibly","giving","excellent","bill","hostess","wrong","asked","buffet","receive","asks","deliver","vote","upset","poorly","respect","pricing"];
+var emoWords = ["worst","returned","mediocre","horrible","overcooked","worse","money","bites","empty","employees","dirty","answer","terrible","wonderful","rude","tasty","lacked","card","shit","crap","waited","woman","dry","15","manager","received","complained","uncomfortable","raw","dollars","returning","handle","cheesy","what's","basically","gonna","gas","charged","sent","original","phone","poor","until","unless","apparently","overpriced","avoid","delicious","paid","30","nasty","blah","sick","mins","soul","40","express","currently","correct","anymore","fed","employee","send","suck","entered","voice","foot","apologize","spoke","ran","begin","eggs","favorite","customer","club","due","awful","excited","cream","minutes","calling","sucks","helping","none","possibly","giving","excellent","bill","hostess","wrong","asked","buffet","receive","asks","deliver","vote","upset","poorly","respect","pricing","fail","thru","deliver","became","=","mcdonald's","jar","olives","fire","calls","listen","respect","apologized","crappy","sea","changing","threw","vicinity","poorly","safe","planned","pretentious","require","dried","pictures","figured","seasoning","browns","bell","mother","putting","living","hill","chaleenge","grill","mail","fell","$100","sits","workers","costs","9","concert","awkward","grace","results","sat","taking","should","bland","joke","sad","watched","co-worker","changed","total","hand","co-workers","style","nearly","establishment","weird","told","taco","orders","her","business","customers","call","10","twice","entire","attitude","except","normally","above","corn","waitress","lack","clearly","45","alright","disappointing","appreciate","imperial","easy","helpful","bad","help","later","checks","soggy","system","turn","shouldn't","complaining","speed","drunk","we'd","purchase","person","wonder","present"];
 
 window.onload = function (){
     search();
@@ -143,6 +143,9 @@ function populate(bizs){
                 //still make sure we dont trim in middle of span
                 if (curBiz.snippets[j].indexOf("<", 60) != -1 && curBiz.snippets[j].indexOf("<", 60) <= 70){
                     reviewSniptrim.innerHTML = "\"" + curBiz.snippets[j].substring(0,curBiz.snippets[j].indexOf("<\/span>", 40)+7) + "...\"" + "<br>";
+                }
+                else if (curBiz.snippets[j].length < 80){
+                    reviewSniptrim.innerHTML = "\"" + curBiz.snippets[j] + "\"" + "<br>";
                 }
                 else {
                     reviewSniptrim.innerHTML = "\"" + curBiz.snippets[j].substring(0,curBiz.snippets[j].indexOf(" ", 70)) + "...\"" + "<br>";
