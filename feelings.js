@@ -11,7 +11,7 @@ var bySentiment = true;
 var globalSnips = {};
 var globalBizs = {};
 var xmlHttp = null;    
-var emoWords = ["happy","alive","good","understanding","great","playful","calm","confident","courageous","peaceful","reliable","joyous","energetic","easy","lucky","liberated","comfortable","amazed","fortunate","optimistic","pleased","delighted","encouraged","sympathetic","overjoyed","clever","gleeful","satisfied","thankful","content","receptive","important","accepting","festive","spirited","certain","kind","ecstatic","thrilled","relaxed","satisfied","wonderful","serene","glad","free","easy ","cheerful","bright","sunny","blessed","merry","reassured ","elated","jubilant","love","interested","positive","loving","eager","considerate","affectionate","fascinated","devoted","inquisitive","inspired","attracted","determined","dynamic","passionate","excited","tenacious","admiration","engrossed","enthusiastic","hardy","warm","curious","bold","secure","touched ","brave","sympathy","close","challenged","loved","optimistic","comforted","confident","hopeful"];
+var emoWords = ["worst","returned","mediocre","horrible","overcooked","worse","money","bites","empty","employees","dirty","answer","terrible","wonderful","rude","tasty","lacked","card","shit","crap","waited","woman","dry","15","manager","received","complained","uncomfortable","raw","dollars","returning","handle","cheesy","what's","basically","gonna","gas","charged","sent","original","phone","poor","until","unless","apparently","overpriced","avoid","delicious","paid","30","nasty","blah","sick","mins","soul","40","express","currently","correct","anymore","fed","employee","send","suck","entered","voice","foot","apologize","spoke","ran","begin","eggs","favorite","customer","club","due","awful","excited","cream","minutes","calling","sucks","helping","none","possibly","giving","excellent","bill","hostess","wrong","asked","buffet","receive","asks","deliver","vote","upset","poorly","respect","pricing"];
 
 window.onload = function (){
     search();
@@ -148,8 +148,11 @@ function populate(bizs){
                     reviewSniptrim.innerHTML = "\"" + curBiz.snippets[j].substring(0,curBiz.snippets[j].indexOf(" ", 70)) + "...\"" + "<br>";
                 }
             }
-            else {
+            else if (curBiz.snippets[j].length > 60){
                 reviewSniptrim.innerHTML = "\"" + curBiz.snippets[j].substring(0,curBiz.snippets[j].indexOf(" ", 50)) + "...\"" + "<br>";
+            }
+            else {
+                reviewSniptrim.innerHTML = "\"" + curBiz.snippets[j] + "\"" + "<br>";
             }
 
             reviewSnipDiv.setAttribute("onmouseover", "onSpanMouseOver(\""+curBiz.business_id+uniqueID+"\")"); 
@@ -226,8 +229,8 @@ function makeStars(biz){
 
     var confidence = document.createElement('p');
     confidence.className = "confidence";
-    biz.confidence = 90;
-    confidence.innerHTML = "We are <b>" + biz.confidence + "</b>% confident in the feels score";
+    //oops, should not have reversed the list
+    confidence.innerHTML = "We are <b>" + (100-biz.confidence) + "</b>% confident in the feels score";
     starDiv.appendChild(confidence);
     
     return starDiv; 
