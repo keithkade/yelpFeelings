@@ -33,7 +33,7 @@ class Handler(BaseHTTPRequestHandler):
         city_temp = []
         for business in city_businesses:
             bad_business = False
-            for category in city_businesses[business]['categories']:
+            for category in business['categories']:
                 if "Auto" in category or "Services" in category:
                     bad_business = True
             if not bad_business:
