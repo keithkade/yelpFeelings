@@ -16,12 +16,14 @@ for line in open('yelp_academic_dataset_review.json', 'r'):
     review_dict[review_json['review_id']] = review_json
 
 sentiment_dict = json.loads(open('reviewSentimentStars.json').read())
+confidence_dict = json.loads(open('reviewConfidence.json').read())
 
 business_sentiments = []
 for business in business_dict:
     num_reviews = 0
     star_aggregate = 0
     sentiment_aggregate = 0
+    confidence_aggregate = 0
     star_average = 0
     sentiment_average = 0
     snippets = []
@@ -31,6 +33,7 @@ for business in business_dict:
             num_reviews += 1
             star_aggregate += review_dict[review]['stars']
             sentiment_aggregate += sentiment_dict[review_dict[review]['review_id']]
+            confidence_aggregate += confidence_dict[review_dict[review]['review_id']]
             if num_reviews < 5:
                 snippets.append(review_dict[review]['text'][:70]+'...')
 
@@ -39,6 +42,7 @@ for business in business_dict:
     else:
         star_average = star_aggregate / num_reviews
         sentiment_average = sentiment_aggregate / num_reviews
+        confidence_average = confidence_aggregate / num_reviews
         business_sentiments.append(
             dict(business_id=business,
                  full_address=business_dict[business]['full_address'],
@@ -46,7 +50,8 @@ for business in business_dict:
                  snippets=snippets,
                  name=business_dict[business]['name'],
                  stars=star_average,
-                 sentiment=sentiment_average)
+                 sentiment=sentiment_average,
+                 confidence=confidence_average)
         )
 
 business_file = open('business_sentiment.json', 'w+')
