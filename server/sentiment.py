@@ -1,4 +1,4 @@
-__author__ = 'jtgoen'
+__author__ = 'kade'
 
 from nltk.classify import NaiveBayesClassifier
 from nltk.corpus import movie_reviews
