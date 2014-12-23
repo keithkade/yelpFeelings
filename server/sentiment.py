@@ -48,7 +48,12 @@ confList = []
 reviewContent = {}
 print "starting sentiment"
 
+cutoff = 0
 for line in open('../../data/yelp_academic_dataset_review.json', 'r'):
+
+    #cutoff+=1
+    #if cutoff > 50:
+    #    break
 
     review_json = TextProcess.read_line(line)
     review_id = review_json['review_id']
@@ -67,8 +72,10 @@ for line in open('../../data/yelp_academic_dataset_review.json', 'r'):
     confList.append((review_id, abs(posScore-negScore)))
 
 print "done with sentiment"
-for pair in classifier.most_informative_features(100):
-    print "\"" + pair[0] + "\"" + ','
+classifier.show_most_informative_features(200)
+
+#for pair in classifier.most_informative_features(200):
+#    print "\"" + pair[0] + "\"" + ','
 
 reviewList = sorted(reviewList, key=lambda count: count[1])
 
