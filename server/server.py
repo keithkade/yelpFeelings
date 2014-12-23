@@ -17,9 +17,6 @@ class Handler(BaseHTTPRequestHandler):
         city = query_dict['city'][0]
         sort = query_dict['sort'][0]
 
-        if sort == "Highest Sentiment":
-            by_sentiment = True
-
         print "Got a GET request!!!!!!"
         print city
         print sort
@@ -32,6 +29,17 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
 
         city_businesses = filter(lambda business: city in business['full_address'], business_sentiment)
+
+        city_temp = []
+        for business in city_businesses:
+            bad_business = False
+            for category in business['categories']:
+                if "Auto" in category or "Services" in category or "Health" in category:
+                    bad_business = True
+            if not bad_business:
+                city_temp.append(business)
+
+        city_businesses = city_temp
 
         if sort == "Highest Sentiment":
             print "Highest Sentiment"
