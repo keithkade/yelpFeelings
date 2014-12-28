@@ -37,7 +37,9 @@ top_five_percent_count = int(round(.05*len(user_dict)))
 
 bad_users = sorted(user_dict, key=lambda users: users['value'], reverse=True)[:top_five_percent_count]
 
-print bad_users
+bad_review_dict = {k: v for k, v in review_dict.iteritems() if v['user_id'] in bad_users}
+
+print bad_review_dict
 
 review_dict = {k: v for k, v in review_dict.iteritems() if v['user_id'] not in bad_users}
 
