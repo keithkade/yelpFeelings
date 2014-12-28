@@ -12,8 +12,8 @@ class TextProcess(object):
         #sample answer:
         return json.loads(a_json_string_from_document)
     @staticmethod
-    def tokenize(string):
-        unicode_word=re.findall(r'\w+',string['text'].lower())
+    def tokenize(string, chopPoint):
+        unicode_word=re.findall(r'\w+',string['text'].lower()[::-1][:chopPoint][::-1])
         return [str(word) for word in unicode_word ]
         #return a list of words
 

@@ -32,9 +32,6 @@ for line in open('posReviews.json'):
         wordsDict[sanitizeWord(word)] = True
     posReviews.append((wordsDict,'pos'))
 
-#negative_features = [(word_features(movie_reviews.words(fileids=[f])), 'neg') for f in negative_ids]
-#positive_features = [(word_features(movie_reviews.words(fileids=[f])), 'pos') for f in positive_ids]
-
 #train_features = negative_features + positive_features
 train_features = negReviews + posReviews
 
@@ -52,27 +49,26 @@ cutoff = 0
 for line in open('../../data/yelp_academic_dataset_review.json', 'r'):
 
     #cutoff+=1
-    #if cutoff > 50:
+    #if cutoff > 10:
     #    break
 
     review_json = TextProcess.read_line(line)
     review_id = review_json['review_id']
-    reviewContent[review_id] = review_json['text']
-
-    #if "Loved my haircut" in review_json['text']:
-    #print "==="
-    #print review_json
-    #print "Review %s pos score: %s" % (review_id, classifier.posScore(word_features(TextProcess.tokenize(review_json))))
-    #print "Review %s neg score: %s" % (review_id, classifier.negScore(word_features(TextProcess.tokenize(review_json))))
-    #print "==="
-    posScore = classifier.posScore(word_features(TextProcess.tokenize(review_json)))
-    negScore = classifier.negScore(word_features(TextProcess.tokenize(review_json)))
+    chopPoint = review_json['text'][::-1].find(' ', 400)
+    if chopPoint > 400:
+        reviewContent[review_id] = review_json['text'][::-1][:chopPoint][::-1]
+        posScore = classifier.posScore(word_features(TextProcess.tokenize(review_json, chopPoint)))
+        negScore = classifier.negScore(word_features(TextProcess.tokenize(review_json, chopPoint)))
+    else:
+        reviewContent[review_id] = review_json['text']
+        posScore = classifier.posScore(word_features(TextProcess.tokenize(review_json, len(review_json['text']))))
+        negScore = classifier.negScore(word_features(TextProcess.tokenize(review_json, len(review_json['text']))))
 
     reviewList.append((review_id,posScore))
     confList.append((review_id, abs(posScore-negScore)))
 
 print "done with sentiment"
-classifier.show_most_informative_features(200)
+#classifier.show_most_informative_features(200)
 
 #for pair in classifier.most_informative_features(200):
 #    print "\"" + pair[0] + "\"" + ','
